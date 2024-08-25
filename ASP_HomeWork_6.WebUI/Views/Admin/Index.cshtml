@@ -1,0 +1,76 @@
+﻿@{
+    Layout = "/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+@model ProductListViweModel
+@if (Model.Products == null || Model.Products.Count == 0)
+{
+    <span class="alert alert-info">No Product Exist</span>
+}
+else
+{
+
+
+    var backgroundColor1 = Model.CurrentSort == 0 ? "lightblue" : "white";
+    var backgroundColor2 = Model.CurrentSort == 1 ? "lightblue" : "white";
+    var backgroundColor3 = Model.CurrentSort == 2 ? "lightblue" : "white";
+    var backgroundColor4 = Model.CurrentSort == 3 ? "lightblue" : "white";
+    var backgroundColor5 = Model.CurrentSort == 4 ? "lightblue" : "white";
+
+
+
+    <ul style="display: flex; list-style: none; gap: 10px;">
+        <li>
+            <a style="background: @backgroundColor1; color: black;" href="/product/index?page=@Model.CurrentPage&category=@Model.CurrentCategory&sort=0">normal</a>
+        </li>
+        <li>
+            <a style="background: @backgroundColor2; color: black;" href="/product/index?page=@Model.CurrentPage&category=@Model.CurrentCategory&sort=1">a-z sort</a>
+        </li>
+        <li>
+            <a style="background: @backgroundColor3; color: black;" href="/product/index?page=@Model.CurrentPage&category=@Model.CurrentCategory&sort=2">z-a sort</a>
+        </li>
+        <li>
+            <a style="background: @backgroundColor4; color: black;" href="/product/index?page=@Model.CurrentPage&category=@Model.CurrentCategory&sort=3">price a-z sort</a>
+        </li>
+        <li>
+            <a style="background: @backgroundColor5; color: black;" href="/product/index?page=@Model.CurrentPage&category=@Model.CurrentCategory&sort=4">price z-a sort</a>
+        </li>
+    </ul>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Unit Price</th>
+                <th>UnitsInStock</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+                    <td>
+                        @item.ProductName
+                    </td>
+                    <td>
+                        @item.UnitPrice
+                    </td>
+                    <td>
+                        @item.UnitsInStock
+                    </td>
+                    <td>
+                        <a class="btn btn-xs btn-success"  href="/Admin/Delete?id=@item.ProductId&page=@Model.CurrentPage&category=@Model.CurrentCategory&sort=@Model.CurrentSort">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <a class="btn btn-xs btn-success" asp-controller="Admin" asp-action="Add">Add</a>
+    </table>
+    <product-list-pager current-category="@Model.CurrentCategory"
+                        current-page="@Model.CurrentPage"
+                        page-count="@Model.PageCount"
+                        page-size="@Model.PageSize"
+                        current-sort="@Model.CurrentSort"></product-list-pager>
+}
