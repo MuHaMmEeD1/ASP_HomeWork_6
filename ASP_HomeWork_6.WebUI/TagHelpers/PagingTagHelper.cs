@@ -15,11 +15,16 @@ namespace ASP_HomeWork_6.WebUI.TagHelpers
         [HtmlAttributeName("current-page")]
         public int CurrentPage { get; set; } 
         [HtmlAttributeName("current-sort")]
-        public int CurrentSort { get; set; }
+        public int CurrentSort { get; set; } 
+        [HtmlAttributeName("admin-check")]
+        public bool AdminCheck { get; set; }
 
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
+
+            string controller = AdminCheck ? "admin" : "product";
+
             output.TagName = "section";
 
             var sb = new StringBuilder();
@@ -31,16 +36,16 @@ namespace ASP_HomeWork_6.WebUI.TagHelpers
                 {
 
                 sb.AppendFormat("<li class='{0}'>", "page-item");
-                sb.AppendFormat("<a  class='page-link' href='/product/index?page={0}&category={1}&sort={2}'> << </a>",
-                    CurrentPage - 1, CurrentCategory, CurrentSort);
+                sb.AppendFormat("<a  class='page-link' href='/{0}/index?page={1}&category={2}&sort={3}'> << </a>",
+                   controller, CurrentPage - 1, CurrentCategory, CurrentSort);
                 sb.Append("</li>");
                 }
 
                 for (int i = 1; i <= PageCount; i++)
                 {
                     sb.AppendFormat("<li class='{0}'>", (i == CurrentPage) ? "page-item active" : "page-item");
-                    sb.AppendFormat("<a  class='page-link' href='/product/index?page={0}&category={1}&sort={2}'> {3} </a>",
-                        i, CurrentCategory, CurrentSort, i);
+                    sb.AppendFormat("<a  class='page-link' href='/{0}/index?page={1}&category={2}&sort={3}'> {4} </a>",
+                       controller, i, CurrentCategory, CurrentSort, i);
                     sb.Append("</li>");
                 }
 
@@ -48,8 +53,8 @@ namespace ASP_HomeWork_6.WebUI.TagHelpers
                 {
 
                 sb.AppendFormat("<li class='{0}'>", "page-item");
-                sb.AppendFormat("<a  class='page-link' href='/product/index?page={0}&category={1}&sort={2}'> >> </a>",
-                    CurrentPage + 1, CurrentCategory, CurrentSort);
+                sb.AppendFormat("<a  class='page-link' href='/{0}/index?page={1}&category={2}&sort={3}'> >> </a>",
+                   controller, CurrentPage + 1, CurrentCategory, CurrentSort);
                 sb.Append("</li>");
                 }
 
